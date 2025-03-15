@@ -1,0 +1,41 @@
+{
+  "name": "sound-mcp",
+  "version": "1.0.0",
+  "description": "A Model Context Protocol server that plays notification sounds when triggered remotely",
+  "main": "dist/src/server.js",
+  "bin": {
+    "sound-mcp": "./dist/bin/sound-mcp.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "start": "node dist/bin/sound-mcp.js",
+    "dev": "ts-node bin/sound-mcp.ts"
+  },
+  "keywords": [
+    "mcp",
+    "cursor",
+    "ai",
+    "sound",
+    "notification"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "play-sound": "^1.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.26",
+    "@types/play-sound": "^1.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "files": [
+    "dist/**/*",
+    "public/**/*"
+  ],
+  "engines": {
+    "node": ">=16"
+  }
+}

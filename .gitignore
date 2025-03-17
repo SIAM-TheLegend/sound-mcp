@@ -11,9 +11,9 @@ out/
 .next/
 
 # Sound files
-public/sounds/*.mp3
-public/sounds/*.wav
-public/sounds/*.ogg
+# public/sounds/*.mp3
+# public/sounds/*.wav
+# public/sounds/*.ogg
 
 # Environment variables
 .env

@@ -7,7 +7,7 @@ import path from "path";
  */
 const config: SoundConfig = {
   // Default sound to play when no specific sound is requested
-  defaultSound: "notification.mp3",
+  defaultSound: "success.wav",
 
   // Default volume level (0.0 to 1.0)
   volume: 0.8,
@@ -15,11 +15,9 @@ const config: SoundConfig = {
   // Custom sound mappings
   // Keys are sound names, values are filenames in the public/sounds directory
   customSounds: {
-    notification: "notification.mp3",
-    success: "success.mp3",
-    warning: "warning.mp3",
-    error: "error.mp3",
-    complete: "complete.mp3",
+    success: "success.wav",
+    warning: "warning.wav",
+    error: "error.wav",
   },
 };
 

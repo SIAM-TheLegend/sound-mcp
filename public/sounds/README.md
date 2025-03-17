@@ -6,11 +6,9 @@ This directory contains sound files that can be played by the sound-mcp server.
 
 The package comes with these default notification sounds:
 
-- `notification.mp3` - Default notification sound
-- `success.mp3` - Success sound
-- `warning.mp3` - Warning sound
-- `error.mp3` - Error sound
-- `complete.mp3` - Task completion sound
+- `success.wav` - Success sound (default)
+- `warning.wav` - Warning sound
+- `error.wav` - Error sound
 
 ## Adding Custom Sounds
 
@@ -24,7 +22,7 @@ const config: SoundConfig = {
   // ... other config properties
   customSounds: {
     // ... existing sounds
-    myCustomSound: "my-custom-sound.mp3",
+    myCustomSound: "my-custom-sound.wav",
   },
 };
 ```

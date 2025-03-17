@@ -41,3 +41,13 @@ export interface ListCommandOptions extends BaseCommandOptions {
    */
   format?: "table" | "json" | "simple";
 }
+
+/**
+ * Options for the server command
+ */
+export interface ServerCommandOptions extends BaseCommandOptions {
+  /**
+   * Port to listen on for the MCP server
+   */
+  port?: number;
+}

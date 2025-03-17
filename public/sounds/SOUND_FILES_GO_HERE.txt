@@ -2,11 +2,9 @@ SOUND FILES GO HERE
 
 This project requires the following sound files to be placed in this directory:
 
-1. notification.mp3 - Default notification sound
-2. success.mp3 - Success sound
-3. warning.mp3 - Warning sound
-4. error.mp3 - Error sound
-5. complete.mp3 - Task completion sound
+1. success.wav - Success sound (default)
+2. warning.wav - Warning sound
+3. error.wav - Error sound
 
 You can download free notification sounds from:
 - https://freesound.org

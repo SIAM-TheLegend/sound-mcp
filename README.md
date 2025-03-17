@@ -14,6 +14,7 @@ This project implements a lightweight MCP server that plays sound notifications 
 - 🔌 Simple command-line interface
 - 🔄 Stateless operation
 - 📝 Type-safe implementation with TypeScript
+- 🔧 MCP Tool integration for AI agent tool calls
 
 ## Prerequisites
 
@@ -29,6 +30,9 @@ sound-mcp/
 ├── src/
 │   ├── server.ts        # Main MCP server implementation
 │   ├── soundPlayer.ts   # Sound playing functionality
+│   ├── mcp/             # MCP tool implementation
+│   │   ├── mcpServer.ts # HTTP server for tool execution
+│   │   └── toolDefinition.ts # Tool schema definitions
 │   ├── types/           # TypeScript type definitions
 │   │   ├── config.ts    # Configuration interface
 │   │   └── commands.ts  # Command interface definitions
@@ -169,15 +173,76 @@ npx sound-mcp play --sound=notification --volume=0.5
 
 # Play multiple times
 npx sound-mcp play --sound=success --repeat=3
+
+# Start the MCP server (for AI tool integration)
+npx sound-mcp server --port=8080
 ```
 
-## How It Works
+## Using as an MCP Tool
 
-When using the `npx` approach:
+The sound-mcp server can be used as an MCP tool that AI agents can call directly:
 
-1. The Cursor AI SDK executes the npx command
-2. The sound-mcp package is temporarily downloaded (if not already cached)
-3. The CLI tool processes the command and plays the requested sound
+### Starting the Tool Server
+
+Start the MCP server to expose the sound playing tools:
+
+```
+npx sound-mcp server --port=8080
+```
+
+This starts an HTTP server that listens for tool requests from AI agents.
+
+### Available Tools
+
+The server exposes two tools:
+
+1. **play_sound** - Plays a notification sound
+
+   - Parameters:
+     - `sound` (string): Name of sound to play
+     - `volume` (number): Volume level (0.0 to 1.0)
+     - `repeat` (integer): Number of times to repeat
+
+2. **list_sounds** - Lists all available notification sounds
+   - No parameters required
+
+### Tool Integration with AI Agents
+
+AI agents can call these tools by making HTTP requests to the server. The tool definition endpoint provides the schema for the tools:
+
+```
+GET http://localhost:8080/tools
+```
+
+Example tool call for playing a sound:
+
+```json
+POST http://localhost:8080/tools/play_sound
+Content-Type: application/json
+
+{
+  "parameters": {
+    "sound": "notification",
+    "volume": 0.8,
+    "repeat": 1
+  }
+}
+```
+
+Example tool call for listing sounds:
+
+```json
+POST http://localhost:8080/tools/list_sounds
+Content-Type: application/json
+
+{
+  "parameters": {}
+}
+```
+
+### Integration with Cursor AI
+
+Cursor AI can be configured to use these tools by registering the MCP tool server endpoint in your preferences or workspace settings.
 
 ## Why TypeScript?
 

@@ -1,15 +1,15 @@
 # Sound MCP Server
 
-A Model Context Protocol (MCP) server that plays notification sounds when triggered remotely through the Cursor AI SDK using `npx`.
+A Model Context Protocol (MCP) server that plays notification sounds when triggered remotely through any Agent or AI SDK using `npx`.
 
 ## Overview
 
-This project implements a lightweight MCP server that plays sound notifications using TypeScript. The server is designed to be available via `npx`, allowing you to trigger sound notifications through simple commands in the Cursor AI SDK without needing to maintain local files or services.
+This project implements a lightweight MCP server that plays sound notifications using TypeScript. The server is designed to be available via `npx`, allowing you to trigger sound notifications through simple commands in the AI Agent interface without needing to maintain local files or services.
 
 ## Features
 
 - 🔔 Play customizable notification sounds
-- 🌐 Remote triggering through Cursor AI SDK via `npx`
+- 🌐 Remote triggering through AI Agents via `npx`
 - ☁️ No installation needed (runs directly with `npx`)
 - 🔌 Simple command-line interface
 - 🔄 Stateless operation
@@ -20,140 +20,24 @@ This project implements a lightweight MCP server that plays sound notifications 
 
 - Node.js (v16+)
 - npm (for `npx` functionality)
-- Cursor AI SDK access
+- Access to AI Agent interface or Claude Desktop App
 - TypeScript knowledge (for development)
 
-## Project Structure
-
-```
-sound-mcp/
-├── src/
-│   ├── server.ts        # Main MCP server implementation
-│   ├── soundPlayer.ts   # Sound playing functionality
-│   ├── mcp/             # MCP tool implementation
-│   │   ├── mcpServer.ts # HTTP server for tool execution
-│   │   └── toolDefinition.ts # Tool schema definitions
-│   ├── types/           # TypeScript type definitions
-│   │   ├── config.ts    # Configuration interface
-│   │   └── commands.ts  # Command interface definitions
-│   └── utils/           # Helper utilities
-├── public/
-│   └── sounds/          # Default notification sounds
-├── config.ts            # Configuration options
-├── bin/                 # Command-line interface
-│   └── sound-mcp.ts     # CLI entry point
-├── tsconfig.json        # TypeScript configuration
-├── package.json         # Dependencies and scripts
-└── README.md            # This documentation
-```
-
-## Setup
-
-1. Clone this repository:
-
-   ```
-   git clone https://github.com/yourusername/sound-mcp.git
-   cd sound-mcp
-   ```
-
-2. Install dependencies:
-
-   ```
-   npm install
-   ```
-
-3. Configure your sound preferences in `config.ts`:
-
-   ```typescript
-   interface SoundConfig {
-     defaultSound: string;
-     volume: number;
-     customSounds: Record<string, string>;
-   }
-
-   const config: SoundConfig = {
-     defaultSound: "notification.mp3",
-     volume: 0.8,
-     customSounds: {
-       // Add your custom sound mappings here
-       success: "success.mp3",
-       warning: "warning.mp3",
-       error: "error.mp3",
-     },
-   };
-
-   export default config;
-   ```
-
-4. Build the TypeScript code:
-   ```
-   npm run build
-   ```
-
-## Publishing to npm
-
-To make your MCP server available via `npx`, you'll need to publish it to npm:
-
-1. Make sure your `package.json` includes a "bin" entry and TypeScript build scripts:
-
-   ```json
-   {
-     "name": "sound-mcp",
-     "version": "1.0.0",
-     "bin": {
-       "sound-mcp": "./dist/bin/sound-mcp.js"
-     },
-     "scripts": {
-       "build": "tsc",
-       "prepublishOnly": "npm run build"
-     },
-     "devDependencies": {
-       "typescript": "^4.9.5",
-       "@types/node": "^18.14.0"
-     }
-   }
-   ```
-
-2. Set up your TypeScript configuration in `tsconfig.json`:
-
-   ```json
-   {
-     "compilerOptions": {
-       "target": "ES2020",
-       "module": "commonjs",
-       "outDir": "./dist",
-       "rootDir": "./",
-       "strict": true,
-       "esModuleInterop": true,
-       "skipLibCheck": true,
-       "forceConsistentCasingInFileNames": true
-     },
-     "include": ["src/**/*", "bin/**/*", "config.ts"],
-     "exclude": ["node_modules", "dist"]
-   }
-   ```
-
-3. Publish to npm:
-   ```
-   npm login
-   npm publish
-   ```
-
-## Usage with Cursor AI SDK
+## Usage with AI Agents
 
 Once published to npm, the MCP server can be triggered directly with npx:
 
-```
+```bash
 npx sound-mcp play --sound=notification
 ```
 
 This approach is commonly used with MCP commands and doesn't require you to install anything locally.
 
-### Direct Command for Cursor
+### Direct Command for AI Assistants
 
-If you're using this with the Cursor AI directly, you can provide this command:
+If you're using this with an AI Assistant directly, you can provide this command:
 
-```
+```bash
 !mcp npx sound-mcp play --sound=notification
 ```
 
@@ -161,12 +45,12 @@ If you're using this with the Cursor AI directly, you can provide this command:
 
 The `sound-mcp` CLI offers several commands:
 
-```
-# Play a sound
-npx sound-mcp play --sound=notification
-
+```bash
 # List available sounds
 npx sound-mcp list
+
+# Play a sound
+npx sound-mcp play --sound=notification
 
 # Set volume
 npx sound-mcp play --sound=notification --volume=0.5
@@ -186,7 +70,7 @@ The sound-mcp server can be used as an MCP tool that AI agents can call directly
 
 Start the MCP server to expose the sound playing tools:
 
-```
+```bash
 npx sound-mcp server --port=8080
 ```
 
@@ -206,60 +90,25 @@ The server exposes two tools:
 2. **list_sounds** - Lists all available notification sounds
    - No parameters required
 
-### Tool Integration with AI Agents
+### Integration with Claude Desktop App
 
-AI agents can call these tools by making HTTP requests to the server. The tool definition endpoint provides the schema for the tools:
-
-```
-GET http://localhost:8080/tools
-```
-
-Example tool call for playing a sound:
+Claude Desktop App can be configured to use these tools by registering the MCP tool server endpoint in your preferences or workspace settings.
 
 ```json
-POST http://localhost:8080/tools/play_sound
-Content-Type: application/json
-
 {
-  "parameters": {
-    "sound": "notification",
-    "volume": 0.8,
-    "repeat": 1
+  "mcpServers": {
+    // Other MCP servers
+    "Sound MCP": {
+      "command": "npx",
+      "args": [
+        "sound-mcp",
+        "play",
+        "--sound=notification"
+      ]
+    }
   }
 }
 ```
-
-Example tool call for listing sounds:
-
-```json
-POST http://localhost:8080/tools/list_sounds
-Content-Type: application/json
-
-{
-  "parameters": {}
-}
-```
-
-### Integration with Cursor AI
-
-Cursor AI can be configured to use these tools by registering the MCP tool server endpoint in your preferences or workspace settings.
-
-## Why TypeScript?
-
-TypeScript was chosen for this project for several benefits:
-
-- **Type Safety**: Ensures command parameters are handled correctly
-- **Better Developer Experience**: Improved IDE support with autocomplete
-- **Self-documenting Code**: Types serve as built-in documentation
-- **Maintainability**: Easier to maintain and extend with type checks
-- **Error Prevention**: Catch errors during development rather than runtime
-
-## Security Considerations
-
-- The npm package is publicly available but does not expose any API endpoints
-- Limited to playing sounds on the local machine where the command is executed
-- Consider adding command validation to prevent abuse
-- TypeScript helps ensure proper validation of inputs
 
 ## Customization
 
@@ -267,8 +116,22 @@ TypeScript was chosen for this project for several benefits:
 
 1. Fork this repository
 2. Add your custom sounds to the `public/sounds/` directory
-3. Update the `config.ts` file to include your custom sounds
-4. Publish your own version to npm with a different package name
+3. Update the `config.ts` file to include your custom sounds or configurations:
+
+   ```typescript
+   const config: SoundConfig = {
+     defaultSound: "success.mp3", // Default ringtone sound
+     volume: 0.8, // Default volume level
+     customSounds: {
+       // Add your custom sound mappings here
+       success: "success.mp3",
+       warning: "warning.mp3",
+       error: "error.mp3",
+     },
+   };
+   ```
+
+4. Build this using `npm run build` or publish your own version to npm with a different package name
 
 ### Changing Default Behavior
 
@@ -284,16 +147,6 @@ If you encounter issues with sound not playing:
 4. Verify that your system has audio playback capabilities
 5. Check permissions for audio playback on your system
 
-## Development
-
-To work on this project:
-
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Make changes to TypeScript files
-4. Build: `npm run build`
-5. Test locally: `node dist/bin/sound-mcp.js play --sound=notification`
-
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -304,5 +157,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- Cursor AI team for the SDK
+- The AI agent developers for their contributions
 - The open-source audio libraries used in this project

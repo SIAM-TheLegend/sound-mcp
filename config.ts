@@ -10,7 +10,7 @@ const config: SoundConfig = {
   defaultSound: "success.wav",
 
   // Default volume level (0.0 to 1.0)
-  volume: 0.8,
+  volume: 1,
 
   // Custom sound mappings
   // Keys are sound names, values are filenames in the public/sounds directory

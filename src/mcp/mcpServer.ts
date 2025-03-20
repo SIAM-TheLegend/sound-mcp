@@ -1,6 +1,6 @@
 import http from "http";
 import { soundMcpServer } from "../server";
-import { playSoundToolDefinition, listSoundsToolDefinition } from "./toolDefinition";
+import { playSoundToolDefinition, listSoundsToolDefinition, sdkToolDefinition } from "./toolDefinition";
 
 /**
  * MCP Server class that handles HTTP requests for tool execution
@@ -72,6 +72,12 @@ export class McpServer {
       return;
     }
 
+    // New branch for sdk_tool
+    if (req.url === "/tools/sdk_tool" && req.method === "POST") {
+      await this.handleSDKTool(req, res);
+      return;
+    }
+
     // If no matching endpoint, return 404
     res.statusCode = 404;
     res.end(JSON.stringify({ error: "Not found" }));
@@ -86,8 +92,8 @@ export class McpServer {
     res.setHeader("Content-Type", "application/json");
     res.statusCode = 200;
 
-    // Return the tool definitions
-    const tools = [playSoundToolDefinition, listSoundsToolDefinition];
+    // Return the tool definitions including the new SDK tool
+    const tools = [playSoundToolDefinition, listSoundsToolDefinition, sdkToolDefinition];
     res.end(JSON.stringify({ tools }));
   }
 
@@ -162,6 +168,39 @@ export class McpServer {
         JSON.stringify({
           sounds: [],
           error: error instanceof Error ? error.message : "Unknown error",
+        })
+      );
+    }
+  }
+
+  /**
+   * Handle requests to execute the sdk_tool
+   * @param req The HTTP request
+   * @param res The HTTP response
+   */
+  private async handleSDKTool(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
+    try {
+      // Parse the request body
+      const body = await this.parseJsonBody(req);
+      const { action } = body.parameters || {};
+
+      // Placeholder for actual cursor action integration
+      res.setHeader("Content-Type", "application/json");
+      res.statusCode = 200;
+      res.end(
+        JSON.stringify({
+          success: true,
+          message: `Action ${action} executed successfully`,
+        })
+      );
+    } catch (error) {
+      console.error("Error executing cursor tool:", error);
+      res.setHeader("Content-Type", "application/json");
+      res.statusCode = 500;
+      res.end(
+        JSON.stringify({
+          success: false,
+          message: error instanceof Error ? error.message : "Unknown error",
         })
       );
     }

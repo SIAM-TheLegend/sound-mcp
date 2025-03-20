@@ -61,3 +61,32 @@ export const listSoundsToolDefinition = {
     },
   },
 };
+
+// Tool definition for AI SDK integration tool
+export const sdkToolDefinition = {
+  name: "sdk_tool",
+  description: "Execute a generic operation for AI SDK integration",
+  parameters: {
+    type: "object",
+    properties: {
+      action: {
+        type: "string",
+        description: "The specific action to perform",
+      },
+    },
+    required: ["action"],
+  },
+  returns: {
+    type: "object",
+    properties: {
+      success: {
+        type: "boolean",
+        description: "Indicator of the tool execution success",
+      },
+      message: {
+        type: "string",
+        description: "The result message of the tool execution",
+      },
+    },
+  },
+};

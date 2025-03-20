@@ -1,6 +1,6 @@
 {
   "name": "sound-mcp",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "A Model Context Protocol server that plays notification sounds when triggered remotely",
   "main": "dist/src/server.js",
   "bin": {
@@ -14,6 +14,7 @@
   },
   "keywords": [
     "mcp",
+    "sound-mcp",
     "ai",
     "agent",
     "sound",
